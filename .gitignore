@@ -1,0 +1,38 @@
+# Runtime output and state
+output/
+logs/
+backup/
+state.json
+*.state.json
+*.log
+*.tmp
+*.bak
+
+# Secrets and certificates
+.env
+.env.*
+*.key
+*.pem
+*.crt
+*.csr
+*.p12
+*.pfx
+*.mobileconfig
+reality-qr.png
+hysteria2-qr.png
+
+# Local test artifacts
+.test-output/
+coverage/
+tmp/
+dist/
+
+# Editors and agents
+.DS_Store
+.vscode/
+.idea/
+.codex/
+.agents/
+
+# Shell tooling
+.shellcheck-cache/

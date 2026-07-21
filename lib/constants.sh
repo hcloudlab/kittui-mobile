@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2034
+set -euo pipefail
+
+KML_NAME="KitTUI Mobile Lite"
+KML_VERSION="${KML_VERSION:-0.1.0}"
+KML_ROOT="${KML_ROOT:-/opt/kittui-mobile}"
+KML_BIN_DIR="$KML_ROOT/bin"
+KML_CONFIG_DIR="$KML_ROOT/config"
+KML_XRAY_CONFIG_DIR="$KML_CONFIG_DIR/xray"
+KML_HYSTERIA_CONFIG_DIR="$KML_CONFIG_DIR/hysteria2"
+KML_CERT_DIR="$KML_ROOT/certs"
+KML_OUTPUT_DIR="$KML_ROOT/output"
+KML_LOG_DIR="$KML_ROOT/logs"
+KML_BACKUP_DIR="$KML_ROOT/backup"
+KML_STATE_FILE="$KML_ROOT/state.json"
+KML_COMMAND="/usr/local/bin/kittui-mobile"
+
+KML_XRAY_SERVICE="kittui-mobile-xray.service"
+KML_HYSTERIA_SERVICE="kittui-mobile-hysteria2.service"
+KML_XRAY_USER="kittui-xray"
+KML_HYSTERIA_USER="kittui-hysteria"
+
+XRAY_VERSION="${XRAY_VERSION:-v26.3.27}"
+HYSTERIA_VERSION="${HYSTERIA_VERSION:-app/v2.6.4}"
+HYSTERIA_VERSION_URL="${HYSTERIA_VERSION_URL:-app%2Fv2.6.4}"
+
+REALITY_DEFAULT_SNI="www.cloudflare.com"
+REALITY_DEFAULT_DEST="www.cloudflare.com:443"
+REALITY_FINGERPRINT="chrome"
+HYSTERIA_DEFAULT_SNI="kittui.local"
+
+REALITY_TCP_CANDIDATES="443 8443 2083 2087 2096"
+HYSTERIA_UDP_CANDIDATES="443 8443 2053 2083 2087 2096"
