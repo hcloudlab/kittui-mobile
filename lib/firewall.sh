@@ -61,10 +61,16 @@ kml_firewall_remove_recorded() {
     value="$(jq -r '.value' <<<"$rule")"
     case "$kind" in
       ufw)
-        command -v ufw >/dev/null 2>&1 && ufw delete allow "$value" || true
+        if command -v ufw >/dev/null 2>&1; then
+          ufw delete allow "$value" || true
+        fi
         ;;
       firewalld)
-        command -v firewall-cmd >/dev/null 2>&1 && firewall-cmd --remove-port="$value" --permanent && firewall-cmd --reload || true
+        if command -v firewall-cmd >/dev/null 2>&1; then
+          if firewall-cmd --remove-port="$value" --permanent; then
+            firewall-cmd --reload || true
+          fi
+        fi
         ;;
     esac
   done
