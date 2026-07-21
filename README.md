@@ -34,6 +34,14 @@ TCP 和 UDP 会分别检测，所以两个协议可以同时使用数字端口 `
 
 ## 一键安装
 
+正式推荐命令，锁定 `v0.1.0-beta.1`：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/hcloudlab/kittui-mobile/v0.1.0-beta.1/install.sh | sudo bash -s -- install
+```
+
+开发版，不建议普通用户使用：
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/hcloudlab/kittui-mobile/main/install.sh | sudo bash -s -- install
 ```

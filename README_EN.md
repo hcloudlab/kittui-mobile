@@ -28,6 +28,14 @@ TCP and UDP are checked separately, so both protocols may use numeric port `443`
 
 ## Install
 
+Recommended command pinned to `v0.1.0-beta.1`:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/hcloudlab/kittui-mobile/v0.1.0-beta.1/install.sh | sudo bash -s -- install
+```
+
+Development version, not recommended for regular users:
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/hcloudlab/kittui-mobile/main/install.sh | sudo bash -s -- install
 ```

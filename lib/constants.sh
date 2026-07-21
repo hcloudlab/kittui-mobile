@@ -3,7 +3,7 @@
 set -euo pipefail
 
 KML_NAME="KitTUI Mobile Lite"
-KML_VERSION="${KML_VERSION:-0.1.0}"
+KML_VERSION="${KML_VERSION:-0.1.0-beta.1}"
 KML_ROOT="${KML_ROOT:-/opt/kittui-mobile}"
 KML_BIN_DIR="$KML_ROOT/bin"
 KML_CONFIG_DIR="$KML_ROOT/config"
