@@ -44,10 +44,22 @@ load_libs() {
 
 @test "amd64 and arm64 architecture mapping is strict" {
   load_libs
-  run bash -c 'source "$PROJECT_ROOT/lib/constants.sh"; source "$PROJECT_ROOT/lib/log.sh"; source "$PROJECT_ROOT/lib/os.sh"; uname() { printf x86_64; }; kml_arch'
+
+  uname() {
+    printf '%s\n' 'x86_64'
+  }
+
+  [ "$(uname -m)" = "x86_64" ]
+  run kml_arch
   [ "$status" -eq 0 ]
   [ "$output" = "amd64" ]
-  run bash -c 'source "$PROJECT_ROOT/lib/constants.sh"; source "$PROJECT_ROOT/lib/log.sh"; source "$PROJECT_ROOT/lib/os.sh"; uname() { printf aarch64; }; kml_arch'
+
+  uname() {
+    printf '%s\n' 'aarch64'
+  }
+
+  [ "$(uname -m)" = "aarch64" ]
+  run kml_arch
   [ "$status" -eq 0 ]
   [ "$output" = "arm64" ]
 }

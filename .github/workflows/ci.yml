@@ -5,9 +5,38 @@ on:
   pull_request:
 
 jobs:
-  shell:
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      SHELLCHECK_VERSION: v0.10.0
+      SHELLCHECK_SHA256: 6c881ab0698e4e6ea235245f22832860544f17ba386442fe7e9d629f8cbedf87
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install lint dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends bash curl jq ruby xz-utils ca-certificates
+      - name: Install fixed ShellCheck
+        run: |
+          curl -fsSL "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" -o /tmp/shellcheck.tar.xz
+          printf '%s  %s\n' "$SHELLCHECK_SHA256" /tmp/shellcheck.tar.xz | sha256sum -c -
+          tar -xJf /tmp/shellcheck.tar.xz -C /tmp
+          sudo install -m 0755 "/tmp/shellcheck-${SHELLCHECK_VERSION}/shellcheck" /usr/local/bin/shellcheck
+          shellcheck --version
+          shellcheck --version | grep -q 'version: 0.10.0'
+      - name: Bash syntax and ShellCheck
+        run: bash tests/validate_static.sh
+      - name: JSON validation
+        run: find . -name '*.json' -not -path './.git/*' -print0 | xargs -0 -r jq empty
+      - name: YAML validation
+        run: ruby -e 'require "yaml"; ARGV.each { |f| YAML.load_file(f) }' .github/workflows/ci.yml
+      - name: YAML basic tab check
+        run: bash -c "grep -RIl $'\t' .github README.md README_EN.md tests lib install.sh uninstall.sh && exit 1 || exit 0"
+
+  test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         image:
           - ubuntu:22.04
@@ -21,12 +50,6 @@ jobs:
       - name: Install test dependencies
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends bash curl jq iproute2 openssl tar unzip ca-certificates shellcheck bats
-      - name: ShellCheck and static validation
-        run: bash tests/validate_static.sh
+          apt-get install -y --no-install-recommends bash curl jq iproute2 openssl tar unzip ca-certificates bats
       - name: Bats
         run: bats tests
-      - name: JSON validation
-        run: find . -name '*.json' -not -path './.git/*' -print0 | xargs -0 -r jq empty
-      - name: YAML basic validation
-        run: bash -c "grep -RIl $'\t' .github README.md README_EN.md tests lib install.sh uninstall.sh && exit 1 || exit 0"
