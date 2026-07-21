@@ -35,6 +35,16 @@ load_libs() {
   source "$PROJECT_ROOT/lib/output.sh"
 }
 
+file_mode() {
+  local file="$1" mode
+
+  if mode="$(stat -c '%a' "$file" 2>/dev/null)"; then
+    printf '%s\n' "$mode"
+  else
+    stat -f '%Lp' "$file"
+  fi
+}
+
 @test "Ubuntu and Debian support is documented" {
   grep -q "Ubuntu 22.04" "$PROJECT_ROOT/README.md"
   grep -q "Ubuntu 24.04" "$PROJECT_ROOT/README.md"
@@ -232,7 +242,7 @@ EOF
 @test "state.json permission is locked to 0600" {
   load_libs
   kml_state_init
-  mode="$(stat -f '%Lp' "$KML_STATE_FILE" 2>/dev/null || stat -c '%a' "$KML_STATE_FILE")"
+  mode="$(file_mode "$KML_STATE_FILE")"
   [ "$mode" = "600" ]
 }
 
